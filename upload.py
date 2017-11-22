@@ -2,11 +2,15 @@ from selenium.common.exceptions import NoSuchElementException
 import os
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
+import openpyxl
 
+#  Acessa os dados de login fora do script, salvo numa planilha existente, para proteger as informações de credenciais
+dados = openpyxl.load_workbook('C:\\gomnet.xlsx')
+login = dados['Plan1']
 url = 'http://gomnet.ampla.com/'
 url2 = 'http://gomnet.ampla.com/Upload.aspx?numsob='
-username = ''
-password = ''
+username = login['A1'].value
+password = login['A2'].value
 
 driver = webdriver.Chrome()
 if __name__ == '__main__':
@@ -40,8 +44,7 @@ if __name__ == '__main__':
                                                       '"Arquivo salvo com sucesso.")]')
                 if status.is_displayed():
                     print(sob + " anexado com sucesso.\n")
-                    driver.save_screenshot('C:\\Users\\Planejamento SG\\Google Drive\\'
-                                           'Vivaldi Captures\\%s' % sob + ".png")
+                    driver.save_screenshot(sob + ".png")
             except NoSuchElementException:
                 log = open("log.txt", "a")
                 log.write(sob + " não foi anexado. \n")
