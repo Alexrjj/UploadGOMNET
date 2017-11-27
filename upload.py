@@ -1,4 +1,4 @@
-from selenium.common.exceptions import NoSuchElementException
+﻿from selenium.common.exceptions import NoSuchElementException
 import os
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
@@ -55,7 +55,7 @@ if __name__ == '__main__':
                         status = driver.find_element_by_xpath('//*[@id="txtBoxMessage"][contains(text(),'
                                                               '"Arquivo salvo com sucesso.")]')
                         if status.is_displayed():
-                            print(sob + " anexado com sucesso.\n")
+                            print(sob + " anexado com sucesso.")
                             driver.save_screenshot(sob + ".png")
                     except NoSuchElementException:
                         log = open("log.txt", "a")
