@@ -25,7 +25,6 @@ if __name__ == '__main__':
     submit_button = driver.find_element_by_id('ImageButton_Login').click()
 
     # Modifica os campos necessários e envia o anexo de cada sob contido nos arquivos txt.
-    # with open('sobs.txt') as sobs:
     for item in dirListing:
         if ".PDF" in item:
             driver.get(url2 + item.partition("_")[0])
@@ -41,7 +40,7 @@ if __name__ == '__main__':
                     if anexo.is_displayed():
                         print("Arquivo " + item + " já foi anexado.")
                 except NoSuchElementException:
-                    # Preenche o campo "Descrição" com "PLANEJAMENTO"
+                    # Preenche o campo "Descrição" com "PONTO DE SERVIÇO"
                     atividade = driver.find_element_by_id('txtBoxDescricao')
                     atividade.send_keys('PONTO DE SERVIÇO')
                     # Identifica o menu " Categoria de Documento" e seleciona a opção "EXECUCAO"
