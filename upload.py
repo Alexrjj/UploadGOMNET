@@ -56,9 +56,10 @@ if __name__ == '__main__':
                         status = driver.find_element_by_xpath("*//a[contains(text(), '" + item + "')]")
                         if status.is_displayed():
                             print("Arquivo " + item + " anexado com sucesso.")
+                            driver.save_screenshot(item.partition(".")[0] + ".png")
                     except NoSuchElementException:
                         log = open("log.txt", "a")
-                        log.write(item + " não foi anexado.")
+                        log.write(item + " não foi anexado.\n")
                         log.close()
                         continue
     print("Fim da execução.")
