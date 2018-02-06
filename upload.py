@@ -40,39 +40,39 @@ if __name__ == '__main__':
                 driver.get(url2 + '_'.join(item.split('_', 4)[1:4]))
             else:
                 driver.get(url2 + item.split('_', 2)[1])
-
-            try:  # Verifica se a sob foi digitada incorretamente.
-                erro = driver.find_element_by_xpath('*//tr/td[contains(text(),'
-                                                    '"Não existem dados para serem exibidos.")]')
-                if erro.is_displayed():
-                    print("Sob " + item.partition("_")[0] + " não encontrada. Favor verificar.")
-            except NoSuchElementException:
-                try:  # Verifica se o arquivo já foi anexado.
-                    anexo = driver.find_element_by_xpath(
-                        "*//a[contains(text(), '" + item + "')]")
-                    if anexo.is_displayed():
-                        print("Arquivo " + item + " já foi anexado.")
+                try:  # Verifica se a sob foi digitada incorretamente.
+                    erro = driver.find_element_by_xpath('*//tr/td[contains(text(),'
+                                                        '"Não existem dados para serem exibidos.")]')
+                    if erro.is_displayed():
+                        print("Sob " + item.partition("_")[0] + " não encontrada. Favor verificar.")
                 except NoSuchElementException:
-                    # Preenche o campo "Descrição" com "PONTO DE SERVIÇO"
-                    atividade = driver.find_element_by_id('txtBoxDescricao')
-                    atividade.send_keys('PONTO DE SERVIÇO')
-                    # Identifica o menu " Categoria de Documento" e seleciona a opção "EXECUCAO"
-                    categoria = Select(driver.find_element_by_id('drpCategoria'))
-                    categoria.select_by_visible_text('EXECUCAO')
-                    # Identifica o menu " Tipo de Documento" e seleciona a opção "OUTROS"
-                    documento = Select(driver.find_element_by_id('DropDownList1'))
-                    documento.select_by_visible_text('OUTROS')
-                    driver.find_element_by_id('fileUPArquivo').send_keys(os.getcwd() + "\\" + item)
-                    driver.find_element_by_id('Button_Anexar').click()
-                    try:
-                        # Verifica se o arquivo foi anexado com êxito
-                        status = driver.find_element_by_xpath("*//a[contains(text(), '" + item + "')]")
-                        if status.is_displayed():
-                            print("Arquivo " + item + " anexado com sucesso.")
-                            driver.save_screenshot(item.partition(".")[0] + ".png")
+                    try:  # Verifica se o arquivo já foi anexado.
+                        anexo = driver.find_element_by_xpath(
+                            "*//a[contains(text(), '" + item + "')]")
+                        if anexo.is_displayed():
+                            print("Arquivo " + item + " já foi anexado.")
                     except NoSuchElementException:
-                        log = open("log.txt", "a")
-                        log.write(item + " não foi anexado.\n")
-                        log.close()
-                        continue
-    print("Fim da execução.")
+                        # Preenche o campo "Descrição" com "PONTO DE SERVIÇO"
+                        atividade = driver.find_element_by_id('txtBoxDescricao')
+                        atividade.send_keys('PONTO DE SERVIÇO')
+                        # Identifica o menu " Categoria de Documento" e seleciona a opção "EXECUCAO"
+                        categoria = Select(driver.find_element_by_id('drpCategoria'))
+                        categoria.select_by_visible_text('EXECUCAO')
+                        # Identifica o menu " Tipo de Documento" e seleciona a opção "OUTROS"
+                        documento = Select(driver.find_element_by_id('DropDownList1'))
+                        documento.select_by_visible_text('OUTROS')
+                        driver.find_element_by_id('fileUPArquivo').send_keys(os.getcwd() + "\\" + item)
+                        driver.find_element_by_id('Button_Anexar').click()
+                        try:
+                            # Verifica se o arquivo foi anexado com êxito
+                            status = driver.find_element_by_xpath("*//a[contains(text(), '" + item + "')]")
+                            if status.is_displayed():
+                                print("Arquivo " + item + " anexado com sucesso.")
+                                driver.save_screenshot(item.partition(".")[0] + ".png")
+
+                        except NoSuchElementException:
+                            log = open("log.txt", "a")
+                            log.write(item + " não foi anexado.\n")
+                            log.close()
+                            continue
+        print("Fim da execução.")
