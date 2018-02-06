@@ -27,7 +27,13 @@ if __name__ == '__main__':
     # Modifica os campos necessários e envia o anexo de cada sob contido nos arquivos txt.
     for item in dirListing:
         if ".PDF" in item:
-            driver.get(url2 + item.partition("_")[0])
+            if item.startswith(('SG_REF', 'SG_QUAL', 'SG_RNT')):
+                driver.get(url2 + '_'.join(item.split('_', 3)[1:3]))
+            elif item.startswith('SG_PQ'):
+                driver.get(url2 + '_'.join(item.split('_', 4)[1:4]))
+            else:
+                driver.get(url2 + item.split('_', 2)[1])
+
             try:  # Verifica se a sob foi digitada incorretamente.
                 erro = driver.find_element_by_xpath('*//tr/td[contains(text(),'
                                                     '"Não existem dados para serem exibidos.")]')
