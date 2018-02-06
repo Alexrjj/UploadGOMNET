@@ -13,8 +13,15 @@ url2 = 'http://gomnet.ampla.com/Upload.aspx?numsob='
 username = login['A1'].value
 password = login['A2'].value
 
+chromeOptions = webdriver.ChromeOptions()
+prefs = {"download.default_directory" : os.getcwd(),
+         "download.prompt_for_download": False}
+chromeOptions.add_experimental_option("prefs",prefs)
+chromeOptions.add_argument('--headless')
+chromeOptions.add_argument('--window-size= 1600x900')
+driver = webdriver.Chrome(chrome_options=chromeOptions)
 
-driver = webdriver.Chrome()
+# driver = webdriver.Chrome()
 if __name__ == '__main__':
     driver.get(url)
     # Faz login no sistema
