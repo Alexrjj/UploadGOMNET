@@ -69,9 +69,9 @@ if __name__ == '__main__':
                             print("Arquivo " + item + " anexado com sucesso.")
                             # driver.save_screenshot(item.partition(".")[0] + ".png")
                             if item.startswith(('SG_REF', 'SG_QUAL', 'SG_RNT')):
-                                driver.save_screenshot('_'.join(item.split('_', 1)[0]) + ".png")
+                                driver.save_screenshot(item.split('.', 1)[0] + ".png")
                             elif item.startswith('SG_PQ'):
-                                driver.save_screenshot('_'.join(item.split('_', 1)[0]) + ".png")
+                                driver.save_screenshot(item.split('.', 1)[0] + ".png")
                             else:
                                 driver.save_screenshot(item.split('.', 1)[0] + ".png")
                     except NoSuchElementException:
