@@ -3,7 +3,6 @@ import os
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 import openpyxl  #  Acessar os dados de login
-import time
 
 dirListing = os.listdir("./")
 #  Acessa os dados de login fora do script, salvo numa planilha existente, para proteger as informações de credenciais
@@ -32,7 +31,7 @@ if __name__ == '__main__':
     passw.send_keys(password)
     submit_button = driver.find_element_by_id('ImageButton_Login').click()
 
-    # Modifica os campos necessários e envia o anexo de cada sob contido nos arquivos txt.
+    # Modifica os campos necessários e envia o anexo de cada sob.
     for item in dirListing:
         if ".PDF" in item:
             if item.startswith(('SG_REF', 'SG_QUAL', 'SG_RNT')):
@@ -53,73 +52,46 @@ if __name__ == '__main__':
                         if anexo.is_displayed():
                             print("Arquivo " + item + " já foi anexado.")
                     except NoSuchElementException:
-                        # Verifica a categoria do arquivo
-                        # atividade = driver.find_element_by_id('txtBoxDescricao')
-                        if 'FORM_FISC' in item:
-                            # atividade.send_keys('PONTO DE SERVIÇO')
-                            # Identifica o menu " Categoria de Documento" e seleciona a opção "ENCERRAMENTO"
+                        # Verificação da categoria dos arquivos de acordo com palavras-chave no nome do mesmo
+                        if 'FORM_FISC' in item:  # Verifica se é Formulário de Fiscalização de Obra
                             categoria = Select(driver.find_element_by_id('drpCategoria'))
                             categoria.select_by_visible_text('ENCERRAMENTO')
-                            # Identifica o menu " Tipo de Documento" e seleciona a opção "FORMULÁRIO DE FISCALIZAÇÃO
-                            # DE OBRA"
                             documento = Select(driver.find_element_by_id('DropDownList1'))
                             documento.select_by_visible_text('FORMULARIO DE FISCALIZACAO DE OBRA')
-                        elif 'AS_BUILT' in item:
-                            # atividade.send_keys('PONTO DE SERVIÇO')
-                            # Identifica o menu " Categoria de Documento" e seleciona a opção "ENCERRAMENTO"
+                        elif 'AS_BUILT' in item:  # Verifica se é AS BUILT
                             categoria = Select(driver.find_element_by_id('drpCategoria'))
                             categoria.select_by_visible_text('ENCERRAMENTO')
-                            # Identifica o menu " Tipo de Documento" e seleciona a opção "FORMULÁRIO DE FISCALIZAÇÃO
-                            # DE OBRA"
                             documento = Select(driver.find_element_by_id('DropDownList1'))
                             documento.select_by_visible_text('AS BUILT')
-                        elif 'APOIO_TRANSITO' in item:
-                            # atividade.send_keys('PONTO DE SERVIÇO')
-                            # Identifica o menu " Categoria de Documento" e seleciona a opção "ENCERRAMENTO"
+                        elif 'APOIO_TRANSITO' in item:  # Verifica se é Apoio de Trânsito
                             categoria = Select(driver.find_element_by_id('drpCategoria'))
                             categoria.select_by_visible_text('PROJETO')
-                            # Identifica o menu " Tipo de Documento" e seleciona a opção "FORMULÁRIO DE FISCALIZAÇÃO
-                            # DE OBRA"
                             documento = Select(driver.find_element_by_id('DropDownList1'))
                             documento.select_by_visible_text('CARTAS/OFICIOS')
-                        elif '_SGD_' in item:
-                            # atividade.send_keys('PONTO DE SERVIÇO')
-                            # Identifica o menu " Categoria de Documento" e seleciona a opção "ENCERRAMENTO"
+                        elif '_SGD_' in item:  # Verifica se é SGD
                             categoria = Select(driver.find_element_by_id('drpCategoria'))
                             categoria.select_by_visible_text('EXECUCAO')
-                            # Identifica o menu " Tipo de Documento" e seleciona a opção "FORMULÁRIO DE FISCALIZAÇÃO
-                            # DE OBRA"
                             documento = Select(driver.find_element_by_id('DropDownList1'))
                             documento.select_by_visible_text('SGD/TET')
-                        elif 'CLIENTE_VITAL' in item:
-                            # atividade.send_keys('PONTO DE SERVIÇO')
-                            # Identifica o menu " Categoria de Documento" e seleciona a opção "ENCERRAMENTO"
+                        elif 'CLIENTE_VITAL' in item:  # Verifica se é carta de cliente vital
                             categoria = Select(driver.find_element_by_id('drpCategoria'))
                             categoria.select_by_visible_text('PROJETO')
-                            # Identifica o menu " Tipo de Documento" e seleciona a opção "FORMULÁRIO DE FISCALIZAÇÃO
-                            # DE OBRA"
                             documento = Select(driver.find_element_by_id('DropDownList1'))
                             documento.select_by_visible_text('CARTAS/OFICIOS')
-                        else:
-                            # atividade.send_keys('PONTO DE SERVIÇO')
-                            # Identifica o menu " Categoria de Documento" e seleciona a opção "ENCERRAMENTO"
+                        else: # Caso não seja nenhuma das anteriores, reconhece como Ponto de Serviço
                             categoria = Select(driver.find_element_by_id('drpCategoria'))
                             categoria.select_by_visible_text('EXECUCAO')
-                            # Identifica o menu " Tipo de Documento" e seleciona a opção "FORMULÁRIO DE FISCALIZAÇÃO
-                            # DE OBRA"
                             documento = Select(driver.find_element_by_id('DropDownList1'))
                             documento.select_by_visible_text('PONTO DE SERVICO')
 
                         # Seleciona o arquivo  a ser upado e clica no botão "Adicionar Documento"
                         driver.find_element_by_id('fileUPArquivo').send_keys(os.getcwd() + "\\" + item)
-                        # driver.find_element_by_id('Button_Anexar').click()
-                        time.sleep(10)
+                        driver.find_element_by_id('Button_Anexar').click()
                         try:
                             # Verifica se o arquivo foi anexado com êxito
                             status = driver.find_element_by_xpath("*//a[contains(text(), '" + item + "')]")
                             if status.is_displayed():
-                                print("Arquivo " + item + " anexado com sucesso.")
-                                # driver.save_screenshot(item.partition(".")[0] + ".png")
+                                print("Arquivo " + item + " anexado com êxito.")
                                 if item.startswith(('SG_REF', 'SG_QUAL', 'SG_RNT')):
                                     driver.save_screenshot('_'.join(item.split('_', 1)[0]) + ".png")
                                 elif item.startswith('SG_PQ'):
