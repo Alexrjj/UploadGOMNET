@@ -12,16 +12,23 @@ url = 'http://gomnet.ampla.com/'
 url2 = 'http://gomnet.ampla.com/Upload.aspx?numsob='
 username = login['A1'].value
 password = login['A2'].value
+Headless_Mode = 'N' # Caso Sim, executa o browser em modo Headless.
 
-# chromeOptions = webdriver.ChromeOptions()
-# prefs = {"download.default_directory" : os.getcwd(),
-#          "download.prompt_for_download": False}
-# chromeOptions.add_experimental_option("prefs",prefs)
-# chromeOptions.add_argument('--headless')
-# chromeOptions.add_argument('--window-size= 1600x900')
-# driver = webdriver.Chrome(chrome_options=chromeOptions)
+Headless_Mode = input('Modo Headless? (S/N) \n')
+if Headless_Mode == 'S':
+    chromeOptions = webdriver.ChromeOptions()
+    prefs = {"download.default_directory" : os.getcwd(),
+             "download.prompt_for_download": False}
+    chromeOptions.add_experimental_option("prefs",prefs)
+    chromeOptions.add_argument('--headless')
+    chromeOptions.add_argument('--window-size= 1600x900')
+    driver = webdriver.Chrome(chrome_options=chromeOptions)
+elif Headless_Mode == 'N':
+    driver = webdriver.Chrome()
+else:
+    print('Opção invalida.')
+    input()
 
-driver = webdriver.Chrome()
 if __name__ == '__main__':
     driver.get(url)
     # Faz login no sistema
