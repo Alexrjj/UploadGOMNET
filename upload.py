@@ -12,10 +12,9 @@ url = 'http://gomnet.ampla.com/'
 url2 = 'http://gomnet.ampla.com/Upload.aspx?numsob='
 username = login['A1'].value
 password = login['A2'].value
-Headless_Mode = 'N' # Caso Sim, executa o browser em modo Headless.
 
-Headless_Mode = input('Modo Headless? (S/N) \n')
-if Headless_Mode == 'S':
+Headless_Mode = input('Headless Mode? (y/n) \n')
+if Headless_Mode == 'y':
     chromeOptions = webdriver.ChromeOptions()
     prefs = {"download.default_directory" : os.getcwd(),
              "download.prompt_for_download": False}
@@ -23,10 +22,10 @@ if Headless_Mode == 'S':
     chromeOptions.add_argument('--headless')
     chromeOptions.add_argument('--window-size= 1600x900')
     driver = webdriver.Chrome(chrome_options=chromeOptions)
-elif Headless_Mode == 'N':
+elif Headless_Mode == 'n':
     driver = webdriver.Chrome()
 else:
-    print('Opção invalida.')
+    print('Invalid argument.')
     input()
 
 if __name__ == '__main__':
@@ -85,6 +84,11 @@ if __name__ == '__main__':
                             categoria.select_by_visible_text('PROJETO')
                             documento = Select(driver.find_element_by_id('DropDownList1'))
                             documento.select_by_visible_text('CARTAS/OFICIOS')
+                        elif '_LOCACAO_' in item or '_APR_' in item or '_DESENHO_' in item: # Verifica se é planejamento
+                            categoria = Select(driver.find_element_by_id('drpCategoria'))
+                            categoria.select_by_visible_text('EXECUCAO')
+                            documento = Select(driver.find_element_by_id('DropDownList1'))
+                            documento.select_by_visible_text('LOCACAO')
                         else: # Caso não seja nenhuma das anteriores, reconhece como Ponto de Serviço
                             categoria = Select(driver.find_element_by_id('drpCategoria'))
                             categoria.select_by_visible_text('EXECUCAO')
@@ -93,7 +97,7 @@ if __name__ == '__main__':
 
                         # Seleciona o arquivo  a ser upado e clica no botão "Adicionar Documento"
                         driver.find_element_by_id('fileUPArquivo').send_keys(os.getcwd() + "\\" + item)
-                        driver.find_element_by_id('Button_Anexar').click()
+                        # driver.find_element_by_id('Button_Anexar').click()
                         try:
                             # Verifica se o arquivo foi anexado com êxito
                             status = driver.find_element_by_xpath("*//a[contains(text(), '" + item + "')]")
