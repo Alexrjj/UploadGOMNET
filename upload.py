@@ -2,9 +2,8 @@
 import os
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
-import openpyxl  #  Acessar os dados de login
+import openpyxl  # Acessar os dados de login
 
-dirListing = os.listdir("./")
 #  Acessa os dados de login fora do script, salvo numa planilha existente, para proteger as informações de credenciais
 dados = openpyxl.load_workbook('C:\\gomnet.xlsx')
 login = dados['Plan1']
@@ -16,9 +15,9 @@ password = login['A2'].value
 Headless_Mode = input('Headless Mode? (y/n) \n')
 if Headless_Mode == 'y':
     chromeOptions = webdriver.ChromeOptions()
-    prefs = {"download.default_directory" : os.getcwd(),
+    prefs = {"download.default_directory": os.getcwd(),
              "download.prompt_for_download": False}
-    chromeOptions.add_experimental_option("prefs",prefs)
+    chromeOptions.add_experimental_option("prefs", prefs)
     chromeOptions.add_argument('--headless')
     chromeOptions.add_argument('--window-size= 1600x900')
     driver = webdriver.Chrome(chrome_options=chromeOptions)
@@ -38,8 +37,9 @@ if __name__ == '__main__':
     submit_button = driver.find_element_by_id('ImageButton_Login').click()
 
     # Modifica os campos necessários e envia o anexo de cada sob.
+    dirListing = os.listdir("./")
     for item in dirListing:
-        if ".PDF" in item:
+        if ".PDF" in item or ".pdf" in item:
             if item.startswith(('SG_REF', 'SG_QUAL', 'SG_RNT')):
                 driver.get(url2 + '_'.join(item.split('_', 3)[1:3]))
             elif item.startswith('SG_PQ'):
@@ -84,12 +84,12 @@ if __name__ == '__main__':
                             categoria.select_by_visible_text('PROJETO')
                             documento = Select(driver.find_element_by_id('DropDownList1'))
                             documento.select_by_visible_text('CARTAS/OFICIOS')
-                        elif '_LOCACAO_' in item or '_APR_' in item or '_DESENHO_' in item: # Verifica se é planejamento
+                        elif '_LOCACAO_' in item or '_APR_' in item or '_DESENHO_' in item:  # Verifica se é planejamento
                             categoria = Select(driver.find_element_by_id('drpCategoria'))
                             categoria.select_by_visible_text('EXECUCAO')
                             documento = Select(driver.find_element_by_id('DropDownList1'))
                             documento.select_by_visible_text('LOCACAO')
-                        else: # Caso não seja nenhuma das anteriores, reconhece como Ponto de Serviço
+                        else:  # Caso não seja nenhuma das anteriores, reconhece como Ponto de Serviço
                             categoria = Select(driver.find_element_by_id('drpCategoria'))
                             categoria.select_by_visible_text('EXECUCAO')
                             documento = Select(driver.find_element_by_id('DropDownList1'))
