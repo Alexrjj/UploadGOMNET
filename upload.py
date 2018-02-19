@@ -52,66 +52,66 @@ if __name__ == '__main__':
                     if erro.is_displayed():
                         print("Sob " + item.partition("_")[0] + " não encontrada. Favor verificar.")
                 except NoSuchElementException:
-                    try:  # Verifica se o arquivo já foi anexado.
+                    '''try:  # Verifica se o arquivo já foi anexado.
                         anexo = driver.find_element_by_xpath(
                             "*//a[contains(text(), '" + item + "')]")
                         if anexo.is_displayed():
                             print("Arquivo " + item + " já foi anexado.")
-                    except NoSuchElementException:
-                        # Verificação da categoria dos arquivos de acordo com palavras-chave no nome do mesmo
-                        if 'FORM_FISC' in item:  # Verifica se é Formulário de Fiscalização de Obra
-                            categoria = Select(driver.find_element_by_id('drpCategoria'))
-                            categoria.select_by_visible_text('ENCERRAMENTO')
-                            documento = Select(driver.find_element_by_id('DropDownList1'))
-                            documento.select_by_visible_text('FORMULARIO DE FISCALIZACAO DE OBRA')
-                        elif 'AS_BUILT' in item:  # Verifica se é AS BUILT
-                            categoria = Select(driver.find_element_by_id('drpCategoria'))
-                            categoria.select_by_visible_text('ENCERRAMENTO')
-                            documento = Select(driver.find_element_by_id('DropDownList1'))
-                            documento.select_by_visible_text('AS BUILT')
-                        elif 'APOIO_TRANSITO' in item:  # Verifica se é Apoio de Trânsito
-                            categoria = Select(driver.find_element_by_id('drpCategoria'))
-                            categoria.select_by_visible_text('PROJETO')
-                            documento = Select(driver.find_element_by_id('DropDownList1'))
-                            documento.select_by_visible_text('CARTAS/OFICIOS')
-                        elif '_SGD_' in item:  # Verifica se é SGD
-                            categoria = Select(driver.find_element_by_id('drpCategoria'))
-                            categoria.select_by_visible_text('EXECUCAO')
-                            documento = Select(driver.find_element_by_id('DropDownList1'))
-                            documento.select_by_visible_text('SGD/TET')
-                        elif 'CLIENTE_VITAL' in item:  # Verifica se é carta de cliente vital
-                            categoria = Select(driver.find_element_by_id('drpCategoria'))
-                            categoria.select_by_visible_text('PROJETO')
-                            documento = Select(driver.find_element_by_id('DropDownList1'))
-                            documento.select_by_visible_text('CARTAS/OFICIOS')
-                        elif '_LOCACAO_' in item or '_APR_' in item or '_DESENHO_' in item: # Verifica se é planejamento
-                            categoria = Select(driver.find_element_by_id('drpCategoria'))
-                            categoria.select_by_visible_text('EXECUCAO')
-                            documento = Select(driver.find_element_by_id('DropDownList1'))
-                            documento.select_by_visible_text('LOCACAO')
-                        else: # Caso não seja nenhuma das anteriores, reconhece como Ponto de Serviço
-                            categoria = Select(driver.find_element_by_id('drpCategoria'))
-                            categoria.select_by_visible_text('EXECUCAO')
-                            documento = Select(driver.find_element_by_id('DropDownList1'))
-                            documento.select_by_visible_text('PONTO DE SERVICO')
+                    except NoSuchElementException:'''
+                    # Verificação da categoria dos arquivos de acordo com palavras-chave no nome do mesmo
+                    if 'FORM_FISC' in item:  # Verifica se é Formulário de Fiscalização de Obra
+                        categoria = Select(driver.find_element_by_id('drpCategoria'))
+                        categoria.select_by_visible_text('ENCERRAMENTO')
+                        documento = Select(driver.find_element_by_id('DropDownList1'))
+                        documento.select_by_visible_text('FORMULARIO DE FISCALIZACAO DE OBRA')
+                    elif 'AS_BUILT' in item:  # Verifica se é AS BUILT
+                        categoria = Select(driver.find_element_by_id('drpCategoria'))
+                        categoria.select_by_visible_text('ENCERRAMENTO')
+                        documento = Select(driver.find_element_by_id('DropDownList1'))
+                        documento.select_by_visible_text('AS BUILT')
+                    elif 'APOIO_TRANSITO' in item:  # Verifica se é Apoio de Trânsito
+                        categoria = Select(driver.find_element_by_id('drpCategoria'))
+                        categoria.select_by_visible_text('PROJETO')
+                        documento = Select(driver.find_element_by_id('DropDownList1'))
+                        documento.select_by_visible_text('CARTAS/OFICIOS')
+                    elif '_SGD_' in item:  # Verifica se é SGD
+                        categoria = Select(driver.find_element_by_id('drpCategoria'))
+                        categoria.select_by_visible_text('EXECUCAO')
+                        documento = Select(driver.find_element_by_id('DropDownList1'))
+                        documento.select_by_visible_text('SGD/TET')
+                    elif 'CLIENTE_VITAL' in item:  # Verifica se é carta de cliente vital
+                        categoria = Select(driver.find_element_by_id('drpCategoria'))
+                        categoria.select_by_visible_text('PROJETO')
+                        documento = Select(driver.find_element_by_id('DropDownList1'))
+                        documento.select_by_visible_text('CARTAS/OFICIOS')
+                    elif '_LOCACAO_' in item or '_APR_' in item or '_DESENHO_' in item: # Verifica se é planejamento
+                        categoria = Select(driver.find_element_by_id('drpCategoria'))
+                        categoria.select_by_visible_text('EXECUCAO')
+                        documento = Select(driver.find_element_by_id('DropDownList1'))
+                        documento.select_by_visible_text('LOCACAO')
+                    else: # Caso não seja nenhuma das anteriores, reconhece como Ponto de Serviço
+                        categoria = Select(driver.find_element_by_id('drpCategoria'))
+                        categoria.select_by_visible_text('EXECUCAO')
+                        documento = Select(driver.find_element_by_id('DropDownList1'))
+                        documento.select_by_visible_text('PONTO DE SERVICO')
 
-                        # Seleciona o arquivo  a ser upado e clica no botão "Adicionar Documento"
-                        driver.find_element_by_id('fileUPArquivo').send_keys(os.getcwd() + "\\" + item)
-                        # driver.find_element_by_id('Button_Anexar').click()
-                        try:
-                            # Verifica se o arquivo foi anexado com êxito
-                            status = driver.find_element_by_xpath("*//a[contains(text(), '" + item + "')]")
-                            if status.is_displayed():
-                                print("Arquivo " + item + " anexado com êxito.")
-                                if item.startswith(('SG_REF', 'SG_QUAL', 'SG_RNT')):
-                                    driver.save_screenshot('_'.join(item.split('_', 1)[0]) + ".png")
-                                elif item.startswith('SG_PQ'):
-                                    driver.save_screenshot('_'.join(item.split('_', 1)[0]) + ".png")
-                                else:
-                                    driver.save_screenshot(item.split('.', 1)[0] + ".png")
-                        except NoSuchElementException:
-                            log = open("log.txt", "a")
-                            log.write(item + " não foi anexado.\n")
-                            log.close()
-                            continue
+                    # Seleciona o arquivo  a ser upado e clica no botão "Adicionar Documento"
+                    driver.find_element_by_id('fileUPArquivo').send_keys(os.getcwd() + "\\" + item)
+                    # driver.find_element_by_id('Button_Anexar').click()
+                    try:
+                        # Verifica se o arquivo foi anexado com êxito
+                        status = driver.find_element_by_xpath("*//a[contains(text(), '" + item + "')]")
+                        if status.is_displayed():
+                            print("Arquivo " + item + " anexado com êxito.")
+                            if item.startswith(('SG_REF', 'SG_QUAL', 'SG_RNT')):
+                                driver.save_screenshot('_'.join(item.split('_', 1)[0]) + ".png")
+                            elif item.startswith('SG_PQ'):
+                                driver.save_screenshot('_'.join(item.split('_', 1)[0]) + ".png")
+                            else:
+                                driver.save_screenshot(item.split('.', 1)[0] + ".png")
+                    except NoSuchElementException:
+                        log = open("log.txt", "a")
+                        log.write(item + " não foi anexado.\n")
+                        log.close()
+                        continue
     print("Fim da execução.")
