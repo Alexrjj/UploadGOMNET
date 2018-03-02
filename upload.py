@@ -74,6 +74,11 @@ if __name__ == '__main__':
                             categoria.select_by_visible_text('PROJETO')
                             documento = Select(driver.find_element_by_id('DropDownList1'))
                             documento.select_by_visible_text('CARTAS/OFICIOS')
+                        elif 'CCR' in item:  # Verifica se é Autorização CCR
+                            categoria = Select(driver.find_element_by_id('drpCategoria'))
+                            categoria.select_by_visible_text('PROJETO')
+                            documento = Select(driver.find_element_by_id('DropDownList1'))
+                            documento.select_by_visible_text('CARTAS/OFICIOS')
                         elif '_SGD_' in item:  # Verifica se é SGD
                             categoria = Select(driver.find_element_by_id('drpCategoria'))
                             categoria.select_by_visible_text('EXECUCAO')
